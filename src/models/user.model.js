@@ -10,7 +10,7 @@ const User = (user) => {
 }
 
 
-User.create = (user, result) => {
+User.register = (user, result) => {
     sql.query("INSERT INTO user set ?", user, (err, res) => {
         if(err) {
             console.log("error: ", err);
@@ -49,9 +49,22 @@ User.findById = (id, result) => {
     })
 }
 
+User.login = (email, result) => {
+    sql.query("SELECT * FROM user WHERE email = ?", email, (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(null, err);
+        }
+        else{
+            console.log('user : ', res);  
+            result(null, res);
+        }
+    })
+}
+
 User.update = (id, user, result) => {
-    sql.query("UPDATE user SET id_user = ?, name = ?, password = ?, email = ?, role = ? WHERE id_user = ?", 
-                [user.id_user, user.name, user.password, user.email, user.role, id], (err, res) => {
+    sql.query("UPDATE user SET name = ?, password = ?, email = ?, role = ? WHERE id_user = ?", 
+                [user.name, user.password, user.email, user.role, id], (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(null, err);
